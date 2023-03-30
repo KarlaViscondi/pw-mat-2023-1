@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: bisque;
+            padding-top: 200px;
+        }
+        .cor1{
+            width: 500px; 
+            margin-left: auto;
+            margin-right: auto;
+            background-color: rgb(251, 245, 238);
+            padding: 8px;
+            border-color: rgb(141, 38, 238);
+            border-style: outset;
+            border-radius: 10em;
+            background-position: center;
+            color: purple;
+            text-align: center;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .cor3{
+            width: 500px; 
+            margin-left: auto;
+            margin-right: auto;
+            background-color: rgb(251, 245, 238);
+            padding: 8px;
+            border-color: rgb(39, 28, 50);
+            border-style: outset;
+            border-radius: 10em;
+            background-position: center;
+            color: rosybrown;
+            text-align: center;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        /*
+      1) Crie um formulário e coloque nele um input numérico com o label "Valor em reais".
+      2) Coloque outro input numérico com o label "Cotação do dólar".
+      3) Coloque, também, uma div para exibir o resultado da conversão de moeda.
+      4) Crie e coloque hooks useRef nos três elementos criados.
+      5) Escreva uma única função handleChange para interceptar a mundança nos dois inputs
+         e atualizar variáveis quando o respectivo valor mudar.
+      6) Usando as variáveis que foram atualizadas em handleChange, exiba na div de resultado
+         o valor convertido.
+      7) Após testar e comprovar o funcionamento, tire uma cópia do arquivo e refaça o exercício,
+         com cada input tendo sua própria função onChange e usando variáveis de estado (useState)
+         para armazenar os valores quando os inputs foram alterados.
+      Este exercício contará para a nota de Participação e Assiduidade (PA).
+    */
+
+        function Form(){
+
+            const reaisRef = React.useRef()
+            const cotacaoRef = React.useRef()
+            const resultadoRef = React.useRef()
+
+            let reais, cotacao, resultado
+
+            function handleChange(event) {
+                reais = reaisRef.current.value
+                cotacao = cotacaoRef.current.value
+                
+                if(cotacao <=0){
+                    resultadoRef.current.textContent = `Informe o valor da cotação`
+                }else{
+                    resultado = reais / cotacao
+                    resultadoRef.current.textContent = `Valor Convertido: ${resultado} dólares`
+                }
+            }
+
+            return (
+                <>
+                    <h2 className="cor3" >Conversão de Real para Dólar</h2>
+                    <form>
+                        <div className="cor1" >
+                            <label>Valor em reais</label> <br/>
+                            <input type="number" ref={reaisRef} onChange={handleChange}/>
+                        </div>
+                        <br/>
+                        <div className="cor1" >
+                            <label>Cotação do Dólar</label> <br/>
+                            <input type="number" ref={cotacaoRef} onChange={handleChange}/>
+                        </div>
+                        <br/>
+                        <div ref={resultadoRef} className="cor1" >Valor Convertido: </div> <br/>
+                    </form>
+            </> 
+            )
+        }
+            const root = ReactDOM.createRoot(document.getElementById('root'))
+            root.render(<Form/>)
+    </script>
+
+</body>
+</html>

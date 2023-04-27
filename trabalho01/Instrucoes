@@ -1,0 +1,19 @@
+___________________________________________________________________________
+Faculdade de Tecnologia de Franca “Dr. Thomaz Novelino”
+Curso Tecnológico Superior em Análise e Desenvolvimento de Sistemas
+(ELETIVA) PROGRAMAÇÃO WEB – 2023/1
+Prof. Me. Fausto Gonçalves Cintra – professor@faustocintra.com.br
+LEIA COM ATENÇÃO TODAS AS INSTRUÇÕES ANTES DE COMEÇAR A FAZER O TRABALHO
+TRABALHO 1 (T1)
+1 INSTRUÇÕES GERAIS
+1.O trabalho é estritamente individual.
+2.A trabalhos idênticos, ou com alto grau de semelhança, será atribuída a nota ZERO.
+3.O valor do trabalho é 10,0 (dez), conforme explicado no documento [ILP508-00] Apresentação.
+
+2 INSTRUÇÕES ESPECÍFICAS
+A proposta da biblioteca React foi, desde o início, facilitar a reutilização de código por meio de componentes, os quais encapsulam funcionalidades de elementos HTML, CSS e JavaScript. Desde a versão 16.8, de fevereiro de 2019, um componente em React pode ser representado simplesmente por uma função – e isso simplificou sobremaneira a forma como eles podem ser concebidos e escritos.
+Antes disso, componentes podiam ser representados apenas por classes. Para criar um componente, era necessário escrever uma classe em JavaScript. Embora os componentes de função tenham se tornado predominantes nos últimos anos, os componentes de classe continuam sendo suportados, existindo muito código e obras de referência que utilizam esses últimos.
+Este trabalho propõe que o aluno realize uma pesquisa e escreva:
+1.um texto sobre as diferenças entre componentes de classe e componentes de função, focando a comparação em dois aspectos: ciclo de vida e gerenciamento de estados.
+2.um componente de classe, que replique as mesmas funcionalidades do componente funcional anexado a estas instruções. O código deve estar devidamente comentado.
+Após finalizar e testar seu trabalho, reúna o material produzido em um arquivo ZIP e faça upload dele no Microsoft Teams, na tarefa “TRABALHO 1 (T1)”.

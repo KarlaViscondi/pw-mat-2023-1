@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de área de formas geométricas planas</title>
+    <style>
+        * {
+            font-family: Candara, Arial, sans;
+    }
+        body {
+            background: linear-gradient(0deg, rgba(4,0,36,0.75) 0%, rgba(9,121,91,1) 35%, rgba(0,255,162,1) 100%);
+            height: 100vh;
+        }
+        main {
+            margin: 40px auto;
+            width: 512px;
+            max-width: 80%;
+            padding: 20px;
+            background-color: white;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        label {
+            display: block;
+            margin-bottom: 16px;
+        }
+        label span {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <script type="text/babel">
+        
+        //1-
+        //Ao inves de usar uma const com arrow function, foi criada uma classe FormSoma com um extend ao React.Component
+
+        //O que é um Extend??? é uma palavra-chave usada em POO para criar uma nova classe (chamada de classe filho) que herda as propriedades e métodos de uma classe existente (chamada de classe pai), 
+        //permitindo que a nova classe adicione sua própria funcionalidade exclusiva.
+
+        //O que é um React.Component??? é usada para criar componentes de classe no React, que são úteis para encapsular a lógica de um componente em um único lugar 
+        //e fornecer uma interface para a renderização e manipulação do componente.
+
+        //Para essa criação de classe é necessario usar um constructor para criação de um objeto, e o operador this.
+
+        //O que é um Constructor??? frequentemente usado em conjunto com a herança, para que as classes filhas possam chamar o constructor da classe pai para inicializar suas próprias propriedades.
+        //Para que serve o This??? para garantir que as propriedades e métodos sejam atribuídos aos objetos corretos e que as funções e métodos sejam executados com o contexto correto.
+        class FormSoma extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    base: window.localStorage.getItem('__base') || '',
+                    altura: window.localStorage.getItem('__altura') || '',
+                    tipo: window.localStorage.getItem('__tipo') || 'R'
+                };
+                this.calcularArea = this.calcularArea.bind(this);
+            }
+            
+            //Nesse caso a foi feito a retirada da palavra "Function"  
+            //e as devidas correções para tratar dos objetos.
+            calcularArea() {
+                let resultado
+                switch(this.state.tipo) {
+                    case 'R':   // Retângulo
+                        resultado = Number(this.state.base) * Number(this.state.altura)
+                        break
+                    case 'T':   // Triângulo
+                        resultado = Number(this.state.base) * Number(this.state.altura) / 2
+                        break
+                    default:    // Elipse/círculo
+                        resultado = (Number(this.state.base) / 2) * (Number(this.state.altura) / 2) * Math.PI
+                }
+    
+                if(isNaN(resultado)) resultado = ''
+                else resultado = resultado.toLocaleString('pt-BR')
+    
+                return resultado
+            }
+            
+            //2-
+            // Armazena as variáveis de estado no localStorage
+            // para retomada mesmo após fechar o navegador
+
+            //componentDidMount() e componentDidUpdate() são métodos do ciclo de vida de um componente em React
+
+            //O que faz o componentDidMount()??? é executado assim que o componente é montado pela primeira vez. 
+            //Este método é geralmente utilizado para executar qualquer inicialização necessária após a renderização inicial.
+            componentDidMount() {
+                window.localStorage.setItem('__base', this.state.base)
+                window.localStorage.setItem('__altura', this.state.altura)
+                window.localStorage.setItem('__tipo', this.state.tipo)
+            }
+            //O que faz o componentDidUpdate()??? é chamado sempre que o componente é atualizado, ou seja, quando o estado 
+            //ou as propriedades do componente são modificados. Este método é geralmente utilizado para executar ações que 
+            //dependem de mudanças de estado ou de propriedades
+            componentDidUpdate() {
+                window.localStorage.setItem('__base', this.state.base)
+                window.localStorage.setItem('__altura', this.state.altura)
+                window.localStorage.setItem('__tipo', this.state.tipo)
+            }
+    
+            render() {
+                //Criou uma variável Área e deu o valor da função à ela.
+                const area = this.calcularArea();
+                return (
+                    <main>
+                        <h1>Calculadora de área de formas geométricas planas</h1>
+                        <form>
+                            <label>
+                                <span>Medida da base</span>
+                                <input 
+                                    type="number" 
+                                    value={this.state.base}
+                                    //ao utilizar o setState com o evento onChange do input, 
+                                    //estamos atualizando o estado da variável base do componente toda vez que 
+                                    //o usuário digitar algo no campo, e com isso, causando uma atualização da interface de forma responsiva.
+                                    onChange={(e) => this.setState({base: e.target.value})}
+                                />
+                            </label>
+                            <label>
+                                <span>Medida da altura</span>
+                                <input 
+                                    type="number" 
+                                    value={this.state.altura}
+                                    onChange={(e) => this.setState({altura: e.target.value})}
+                                />
+                            </label>
+                            <label>
+                                <span>Tipo de forma</span>
+                                <select value={this.state.tipo} onChange={(e) => this.setState({tipo: e.target.value})}>
+                                    <option value="R">Retângulo</option>
+                                    <option value="T">Triângulo</option>
+                                    <option value="E">Elipse/círculo</option>
+                                </select> 
+                            </label>
+                            <label>
+                                <span>Área calculada</span>
+                                <div><strong>{area}</strong></div>
+                            </label>
+                        </form>
+                    </main>
+                )
+            }
+        }
+        const root = ReactDOM.createRoot(document.getElementById('root'))
+        root.render(<FormSoma />)
+
+        // Em suma foi feito:
+        // criar uma classe FormSoma que estende React.Component 
+        // e incluir o estado inicial no construtor da classe. 
+        // Em seguida, as funções calcularArea, componentDidMount e 
+        // componentDidUpdate foram adicionadas à classe, 
+        // com calcularArea sendo vinculada ao contexto da classe no construtor. 
+        // Por fim, as chamadas às funções de estado foram alteradas 
+        // para se referirem ao estado da classe usando this.
+    </script>
+    
+</body>
+
+
+

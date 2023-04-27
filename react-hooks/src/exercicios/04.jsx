@@ -3,7 +3,21 @@ import * as React from 'react'
 function Board() {
   // 🐨 squares é o estado para este componente. Adicione useState para squares
   //const squares = Array(9).fill(null)
-  const [squares, setSquares] = React.useState(Array(9).fill(null))
+  
+  //Quando o componente for carregado, verificamos se ele existe estado salvo e iniciamos a variável
+  //de estado com isso.Como o estado salvo é string e a nossa variavel de estado é vetor,
+  //é necessario converter de um para o outro.
+  //const [squares, setSquares] = React.useState(Array(9).fill(null))
+  const [squares, setSquares] = React.useState(
+    //Usa o estado gravado no localStorage, se houver, ou um vetor de 9 nulos, caso contrario
+    //JSON.parse(window.localStorage.getItem('tic-tac-toe')) ?? Array(9).fill(null)
+
+    //Fornecendo uma função de um valor, o React entenderá o que?
+    //queremos executar a ação de inicialização do estado apenas durante a fase "mount"
+    // do ciclo de vida do componente, o que é chamado "lazy initializer"
+    ()=> JSON.parse(window.localStorage.getItem('tic-tac-toe')) ?? Array(9).fill(null)
+    
+  )
 
   // 🐨 Precisaremos dos seguintes itens de estados derivados:
   // - nextValue ('X' ou 'O')
@@ -15,6 +29,12 @@ function Board() {
   const winner = calculateWinner(squares)
   const status = calculateStatus(winner, squares, nextValue)
 
+  //React.useEffect(()=> {}, []) ele é composto por um arrow function e um vetor vazio
+  React.useEffect(()=> {
+    //Como o estado "squares" é um vetor, ele deve ser convertido em string com JSON.stringify() antes de ser salvo no localStorage
+    window.localStorage.setItem('tic-tac-toe', JSON.stringify(squares))
+  }, [squares]) //passa o squares aqui pq a gente so quer que o useEffect atualize quando tiver alteração no squares
+  
   // Esta é a função que o manipulador de clique no quadrado irá chamar. `square`
   // deve ser um índice. Portanto, se você clicar sobre o quadrado central, o
   // valor será `4`.
@@ -78,7 +98,7 @@ function Board() {
         restart
       </button>
       <hr />
-      <div>{JSON.stringify(squares)}</div>
+      {/*<div>{JSON.stringify(squares)}</div>*/}
     </div>
   )
 }

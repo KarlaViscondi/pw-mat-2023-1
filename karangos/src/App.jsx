@@ -4,13 +4,27 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import TopBar from './components/ui/TopBar';
+import theme from './utils/theme'
+import {ThemeProvider} from '@mui/material/styles'
+import Box from '@mui/material/Box'
+import FooterBar from './components/ui/FooterBar';
 
 function App() {
 
   return (
     <>
       <BrowserRouter>
-      <TopBar/>
+        <ThemeProvider theme={theme}>
+          {/* box cria uma div , sx = estilo extendido*/}
+          <Box sx={{
+            width: '100vw', 
+            height: '100vh', 
+            backgroundColor: 'background.default'
+            }}> 
+            <TopBar/>
+            <FooterBar/>
+          </Box>
+        </ThemeProvider>
       </BrowserRouter>
     </>
   )

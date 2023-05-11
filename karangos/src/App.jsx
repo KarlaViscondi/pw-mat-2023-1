@@ -8,6 +8,8 @@ import theme from './utils/theme'
 import {ThemeProvider} from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import FooterBar from './components/ui/FooterBar';
+import Homepage from './pages/Homepage';
+import { CssBaseline } from '@mui/material';
 
 function App() {
 
@@ -15,13 +17,22 @@ function App() {
     <>
       <BrowserRouter>
         <ThemeProvider theme={theme}>
+          <CssBaseline/>
           {/* box cria uma div , sx = estilo extendido*/}
           <Box sx={{
             width: '100vw', 
-            height: '100vh', 
+            minHeight: '100vh', 
             backgroundColor: 'background.default'
             }}> 
             <TopBar/>
+            <Box sx={{
+              margin: '25px 25px 55px 25px'
+              //backgroundColor: 'aqua'
+            }}>
+              <Routes>
+                <Route path='/' element={<Homepage/>}></Route>
+              </Routes>
+            </Box>
             <FooterBar/>
           </Box>
         </ThemeProvider>

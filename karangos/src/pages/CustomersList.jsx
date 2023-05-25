@@ -1,16 +1,20 @@
 import React from 'react';
 import  Typography  from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
 import { DataGrid } from '@mui/x-data-grid';
+import {format} from 'date-fns';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { IconButton } from '@mui/material';
 
 export default function CustomersList(){
     const [state, setState] = React.useState({
-        custormers: {}      
+        customers: {}      
     })
 
     //Desestruturando as variáveis de estado
     const {
-        custormers
+        customers
     } = state
 
     //Este useEffect() será executado apenas uma vez, durante o carregamento da pag
@@ -23,7 +27,7 @@ export default function CustomersList(){
             const result = await fetch('https://api.faustocintra.com.br/customers')
 
             //requisicao ok
-            if(result.ok) setState({...state, custormers: await result.json()})
+            if(result.ok) setState({...state, customers: await result.json()})
             //requisicao com erro
             else throw new Error(`[HTTP ${result.status}] ${result.statusText}`)
         }
@@ -36,33 +40,67 @@ export default function CustomersList(){
     const columns = [
         { field: 'id', headerName: 'ID', width: 90 },
             {
-            field: 'firstName',
-            headerName: 'First name',
+            field: 'name',
+            headerName: 'Nome',
+            width: 300,
+            },
+            {
+            field: 'ident_document',
+            headerName: 'CPF',
+            // align: 'center',
             width: 150,
-            editable: true,
+            // headerAlign: 'center',
             },
             {
-            field: 'lastName',
-            headerName: 'Last name',
+            field: 'birth_date',
+            headerName: 'Data nasc',
+            // align: 'center',
             width: 150,
-            editable: true,
+            // headerAlign: 'center',
+            valueFormatter: params => {
+                if(params.value) return format(new Date(params.value), 'dd/MM/yyyy')
+                else return ''
+                }
             },
             {
-            field: 'age',
-            headerName: 'Age',
-            type: 'number',
-            width: 110,
-            editable: true,
+            field: 'city',
+            headerName: 'Municipio/UF',
+            // align: 'center',
+            width: 300,
+            // headerAlign: 'center',
+            //Colocando dois campos na mesma célula
+            valueGetter: params => params.row.city + ' - ' + params.row.uf
             },
             {
-            field: 'fullName',
-            headerName: 'Full name',
-            description: 'This column has a value getter and is not sortable.',
-            sortable: false,
-            width: 160,
-            valueGetter: (params) =>
-                `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-        },
+            field: 'phone',
+            headerName: 'Celular',
+            width: 150,
+            // headerAlign: 'center',
+            // align: 'center',
+            },
+            {
+            field: 'email',
+            headerName: 'E-mail',
+            width: 200,
+            },
+            {
+            field: 'edit',
+            headerName: 'Editar',
+            width: 90,
+            align: 'center',
+            renderCell: params =>  <IconButton aria-label='Editar'>
+                <EditIcon></EditIcon>
+            </IconButton>
+            },
+            {
+            field: 'delete',
+            headerName: 'Excluir',
+            width: 90,
+            align: 'center',
+            renderCell: params =>  <IconButton aria-label='Editar'>
+                <DeleteForeverIcon></DeleteForeverIcon>
+            </IconButton>
+            },
     ];
         
         const rows = [
@@ -79,13 +117,13 @@ export default function CustomersList(){
         
     return (
         <>
-            <Typography variant='h1'>
+            <Typography variant='h1' sx={{mb: '50px'}}>
                 Listagem de clientes
             </Typography>
 
-            <Box sx={{ height: 400, width: '100%' }}>
+            <Paper elevation={4} sx={{ height: 400, width: '100%' }}>
                 <DataGrid
-                    rows={rows}
+                    rows={customers}
                     columns={columns}
                     initialState={{
                     pagination: {
@@ -98,11 +136,7 @@ export default function CustomersList(){
                     checkboxSelection
                     disableRowSelectionOnClick
                 />
-            </Box>
-
-            <div>
-                {JSON.stringify(custormers)}
-            </div>
+            </Paper>
         </>
     )
 }

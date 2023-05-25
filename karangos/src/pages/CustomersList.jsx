@@ -98,7 +98,7 @@ export default function CustomersList(){
             width: 90,
             align: 'center',
             renderCell: params =>  <IconButton aria-label='Editar'>
-                <DeleteForeverIcon></DeleteForeverIcon>
+                <DeleteForeverIcon color='error'></DeleteForeverIcon>
             </IconButton>
             },
     ];

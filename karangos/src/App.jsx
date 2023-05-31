@@ -2,6 +2,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import './App.css'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import TopBar from './components/ui/TopBar';
 import theme from './utils/theme'
@@ -11,6 +12,7 @@ import FooterBar from './components/ui/FooterBar';
 import Homepage from './pages/Homepage';
 import { CssBaseline } from '@mui/material';
 import CustomersList from './pages/CustomersList';
+import CustomersForm from './pages/CustomersForm';
 
 function App() {
 
@@ -32,12 +34,10 @@ function App() {
             }}>
               <Routes>
                 <Route path='/' element={<Homepage/>}></Route>
-              </Routes>
-
-              <Routes>
                 <Route path='/customers' element={<CustomersList/>}></Route>
+                <Route path='/customers/new' element={<CustomersForm/>}></Route>
+                <Route path='/customers/:id' element={<CustomersForm/>}></Route>
               </Routes>
-
             </Box>
             <FooterBar/>
           </Box>

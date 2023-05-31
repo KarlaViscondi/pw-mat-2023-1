@@ -6,6 +6,10 @@ import {format} from 'date-fns';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { IconButton } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import { Link } from 'react-router-dom';
 
 export default function CustomersList(){
     const [state, setState] = React.useState({
@@ -88,16 +92,19 @@ export default function CustomersList(){
             headerName: 'Editar',
             width: 90,
             align: 'center',
-            renderCell: params =>  <IconButton aria-label='Editar'>
-                <EditIcon></EditIcon>
-            </IconButton>
+            renderCell: params => 
+                <Link to={'./' + params.id}>
+                    <IconButton aria-label='Editar'>
+                        <EditIcon></EditIcon>
+                    </IconButton>
+                </Link>
             },
             {
             field: 'delete',
             headerName: 'Excluir',
             width: 90,
             align: 'center',
-            renderCell: params =>  <IconButton aria-label='Editar'>
+            renderCell: params =>  <IconButton aria-label='Delete' onClick={() => handleDeleteButtonClick(params.id)}>
                 <DeleteForeverIcon color='error'></DeleteForeverIcon>
             </IconButton>
             },
@@ -114,12 +121,41 @@ export default function CustomersList(){
             { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
             { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
         ];
-        
+    
+    async function handleDeleteButtonClick(id){
+        if(confirm('Deseja realmente excluir este item?')){
+            try{
+                //Faz a chamada ap backend para excluir o cliente
+                const result = await fetch(`https://api.faustocintra.com.br/customers/${id}`, {
+                    method: 'DELETE'
+                })
+                //Se a exclusão tiver sido feita com sucesso, atualiza a listagem
+                if(result.ok) loadData()
+                alert('Exclusão efetuada com sucesso!')
+            }
+            catch(error){
+                console.error(error)
+            }
+        }
+    }
+
     return (
         <>
             <Typography variant='h1' sx={{mb: '50px'}}>
                 Listagem de clientes
             </Typography>
+
+            <Box sx={{display:'flex', justifyContent:'right', mb:'25px'}}> 
+                <Link to="new">
+                    <Button 
+                        color='secondary' 
+                        variant="contained" 
+                        size='large'
+                        startIcon={<AddBoxIcon />}>
+                        Cadastrar novo cliente
+                    </Button>
+                </Link>
+            </Box>
 
             <Paper elevation={4} sx={{ height: 400, width: '100%' }}>
                 <DataGrid

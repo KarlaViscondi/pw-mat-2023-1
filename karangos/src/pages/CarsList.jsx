@@ -2,7 +2,6 @@ import React from 'react';
 import  Typography  from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import { DataGrid } from '@mui/x-data-grid';
-import {format} from 'date-fns';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { IconButton } from '@mui/material';
@@ -11,14 +10,15 @@ import Button from '@mui/material/Button';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { Link } from 'react-router-dom';
 
-export default function CustomersList(){
+//Função da lista de carros com variaveis de estado
+export default function CarsList(){
     const [state, setState] = React.useState({
-        customers: {}      
+        cars: {}      
     })
 
     //Desestruturando as variáveis de estado
     const {
-        customers
+        cars
     } = state
 
     //Este useEffect() será executado apenas uma vez, durante o carregamento da pag
@@ -28,10 +28,10 @@ export default function CustomersList(){
     
     async function loadData(){
         try{
-            const result = await fetch('https://api.faustocintra.com.br/customers')
+            const result = await fetch('https://api.faustocintra.com.br/cars') //banco de dados novo, referente a lista de carros
 
             //requisicao ok
-            if(result.ok) setState({...state, customers: await result.json()})
+            if(result.ok) setState({...state, cars: await result.json()})
             //requisicao com erro
             else throw new Error(`[HTTP ${result.status}] ${result.statusText}`)
         }
@@ -40,53 +40,54 @@ export default function CustomersList(){
             console.error(error)
         }
     }
-
+    //field: nome que está no banco
+    //headerName: nome que vai ser exibido 
     const columns = [
         { field: 'id', headerName: 'ID', width: 90 },
             {
-            field: 'name',
-            headerName: 'Nome',
-            width: 300,
+            field: 'brand',
+            headerName: 'Marca',
+            width: 150,
             },
             {
-            field: 'ident_document',
-            headerName: 'CPF',
+            field: 'model',
+            headerName: 'Modelo',
             // align: 'center',
             width: 150,
             // headerAlign: 'center',
             },
             {
-            field: 'birth_date',
-            headerName: 'Data nasc',
+            field: 'color',
+            headerName: 'Cor',
             // align: 'center',
             width: 150,
             // headerAlign: 'center',
-            valueFormatter: params => {
-                if(params.value) return format(new Date(params.value), 'dd/MM/yyyy')
-                else return ''
-                }
             },
             {
-            field: 'city',
-            headerName: 'Municipio/UF',
+            field: 'year_manufacture',
+            headerName: 'Ano de fabricação',
             // align: 'center',
-            width: 300,
-            // headerAlign: 'center',
-            //Colocando dois campos na mesma célula
-            valueGetter: params => params.row.city + ' - ' + params.row.uf
-            },
-            {
-            field: 'phone',
-            headerName: 'Celular',
             width: 150,
             // headerAlign: 'center',
-            // align: 'center',
             },
             {
-            field: 'email',
-            headerName: 'E-mail',
-            width: 200,
+            field: 'imported',
+            headerName: 'Importado (1) - não importado (0)',
+            width: 250,
+            // headerAlign: 'center',
+            align: 'center',
             },
+            {
+            field: 'plates',
+            headerName: 'Placas',
+            width: 150,
+            },
+            {
+            field: 'selling_price',
+            headerName: 'Preço de venda',
+            width: 150,
+            },
+            //botao editar - rediciona para a pagina de cadastro de novos carros
             {
             field: 'edit',
             headerName: 'Editar',
@@ -99,6 +100,7 @@ export default function CustomersList(){
                     </IconButton>
                 </Link>
             },
+            //botao que deleta um carro
             {
             field: 'delete',
             headerName: 'Excluir',
@@ -109,12 +111,12 @@ export default function CustomersList(){
             </IconButton>
             },
     ];
-        
+    //funcao para deletar um carro ativada pelo botao 'excluir'
     async function handleDeleteButtonClick(id){
         if(confirm('Deseja realmente excluir este item?')){
             try{
-                //Faz a chamada ap backend para excluir o cliente
-                const result = await fetch(`https://api.faustocintra.com.br/customers/${id}`, {
+                //Faz a chamada p/ backend para excluir o cliente
+                const result = await fetch(`https://api.faustocintra.com.br/cars/${id}`, {
                     method: 'DELETE'
                 })
                 //Se a exclusão tiver sido feita com sucesso, atualiza a listagem
@@ -126,11 +128,12 @@ export default function CustomersList(){
             }
         }
     }
-
+    //Foi adicionado um botão para cadastrar novo carro
+    //E o data grid para mostrar a listagem de carros que ja estão cadastrados
     return (
         <>
             <Typography variant='h1' sx={{mb: '50px'}}>
-                Listagem de clientes
+                Listagem de carros
             </Typography>
 
             <Box sx={{display:'flex', justifyContent:'right', mb:'25px'}}> 
@@ -140,14 +143,14 @@ export default function CustomersList(){
                         variant="contained" 
                         size='large'
                         startIcon={<AddBoxIcon />}>
-                        Cadastrar novo cliente
+                        Cadastrar novo carro
                     </Button>
                 </Link>
             </Box>
 
             <Paper elevation={4} sx={{ height: 400, width: '100%' }}>
                 <DataGrid
-                    rows={customers}
+                    rows={cars}
                     columns={columns}
                     initialState={{
                     pagination: {

@@ -13,6 +13,8 @@ import Homepage from './pages/Homepage';
 import { CssBaseline } from '@mui/material';
 import CustomersList from './pages/CustomersList';
 import CustomersForm from './pages/CustomersForm';
+import CarsList from './pages/CarsList'; {/*Importei CarsList e CarsForm*/}
+import CarsForm from './pages/CarsForm';
 
 function App() {
 
@@ -37,6 +39,9 @@ function App() {
                 <Route path='/customers' element={<CustomersList/>}></Route>
                 <Route path='/customers/new' element={<CustomersForm/>}></Route>
                 <Route path='/customers/:id' element={<CustomersForm/>}></Route>
+                <Route path='/cars' element={<CarsList/>}></Route> {/*Rotas cars, cars/new e cars/:id adicionadas e apontando para as páginas correspondentes*/}
+                <Route path='/cars/new' element={<CarsForm/>}></Route>
+                <Route path='/cars/:id' element={<CarsForm/>}></Route>
               </Routes>
             </Box>
             <FooterBar/>

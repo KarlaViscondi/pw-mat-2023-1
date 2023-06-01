@@ -4,7 +4,6 @@ import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import {Link} from 'react-router-dom';
-import Divider from '@mui/material/Divider'
 
 export default function MainMenu() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -44,9 +43,13 @@ export default function MainMenu() {
                 <MenuItem divider
                     onClick={handleClose}
                     component={Link} to='/'>Página inicial</MenuItem>
-                <MenuItem 
+                <MenuItem divider
                     onClick={handleClose}
                     component={Link} to='/customers'>Clientes</MenuItem>
+                {/*Adicionei mais um MenuItem correspondente a página criada cars e referenciei devidamente*/}
+                <MenuItem 
+                    onClick={handleClose}
+                    component={Link} to='/cars'>Carros</MenuItem>
             </Menu>
         </div>
     );

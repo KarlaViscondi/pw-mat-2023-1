@@ -15,6 +15,7 @@ import CustomersList from './pages/CustomersList';
 import CustomersForm from './pages/CustomersForm';
 import CarsList from './pages/CarsList'; {/*Importei CarsList e CarsForm*/}
 import CarsForm from './pages/CarsForm';
+import Autor from './pages/Autor';
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
                 <Route path='/cars' element={<CarsList/>}></Route> {/*Rotas cars, cars/new e cars/:id adicionadas e apontando para as páginas correspondentes*/}
                 <Route path='/cars/new' element={<CarsForm/>}></Route>
                 <Route path='/cars/:id' element={<CarsForm/>}></Route>
+                <Route path='/autor' element={<Autor/>}></Route>
               </Routes>
             </Box>
             <FooterBar/>
